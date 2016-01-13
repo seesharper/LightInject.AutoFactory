@@ -53,11 +53,9 @@ namespace LightInject
         /// <param name="container">The target <see cref="IServiceContainer"/>.</param>
         public static void EnableAutoFactories(this IServiceContainer container)
         {
-            container.RegisterConstructorDependency<IServiceFactory>((factory, info) => container);
             container.Register<IAutoFactoryBuilder, AutoFactoryBuilder>();
             container.Register<ITypeBuilderFactory, TypeBuilderFactory>(new PerContainerLifetime());
             container.Register<IServiceNameResolver, ServiceNameResolver>(new PerContainerLifetime());
-            container.RegisterConstructorDependency<IServiceFactory>((factory, info) => container);
         }
 
         /// <summary>
@@ -316,17 +314,9 @@ namespace LightInject.AutoFactory
             const TypeAttributes typeAttributes = TypeAttributes.Public | TypeAttributes.Class;
             var typeName = targetType.Name + "AutoFactory";
 
-            if (targetType.GetTypeInfo().IsInterface)
-            {
-                Type[] interfaceTypes = new[] { targetType }.Concat(additionalInterfaces).ToArray();
-                var typeBuilder = moduleBuilder.DefineType(typeName, typeAttributes, null, interfaceTypes);
-                return typeBuilder;
-            }
-            else
-            {
-                var typeBuilder = moduleBuilder.DefineType(typeName, typeAttributes, targetType, additionalInterfaces);
-                return typeBuilder;
-            }
+            Type[] interfaceTypes = new[] { targetType }.Concat(additionalInterfaces).ToArray();
+            var typeBuilder = moduleBuilder.DefineType(typeName, typeAttributes, null, interfaceTypes);
+            return typeBuilder;
         }
 
         /// <summary>

@@ -30,11 +30,21 @@ namespace LightInject.AutoFactory.Tests
         [Theory, InjectData]
         public void ShouldGetGenericInstanceUsingFactory(IFooFactory fooFactory)
         {
-            var instance = fooFactory.GetFoo<string>(42);
+            var instance = fooFactory.GetFoo<Disposable>(42);
 
-            Assert.IsType<Foo<string>>(instance);
+            Assert.IsType<Foo<Disposable>>(instance);
         }
+      
+        [Theory, InjectData]
+        public void ShouldGetConcreteInstanceUsingFactory(IAnotherFooFactory fooFactory)
+        {
+            var foo = fooFactory.GetFoo(42);
+            Assert.IsType<Foo>(foo);
 
+            var anotherFoo = fooFactory.GetAnotherFoo(42);
+            Assert.IsType<AnotherFoo>(anotherFoo);
+        }
+      
         [Fact]
         public void ShouldThrowMeaningfulExceptionWhenFactoryIsNotAnInterface()
         {
@@ -45,11 +55,14 @@ namespace LightInject.AutoFactory.Tests
         public static void Configure(IServiceContainer container)
         {
             container.Register<int, IFoo>((factory, value) => new Foo(value));
-            container.Register(typeof(IFoo<>), typeof(Foo<>));
+            container.Register<int, Foo>((factory, value) => new Foo(value));
+            container.Register<int, AnotherFoo>((factory, value) => new AnotherFoo(value));            
+            container.Register(typeof(IFoo<>), typeof(Foo<>));            
             container.RegisterConstructorDependency((factory, info, args) => (int)args[0]);
             container.Register<int, IFoo>((factory, value) => new AnotherFoo(value), "AnotherFoo");            
             container.EnableAutoFactories();
             container.RegisterAutoFactory<IFooFactory>();
+            container.RegisterAutoFactory<IAnotherFooFactory>();            
         }
 
         internal virtual AutoFactoryBuilder CreateFactoryBuilder()
@@ -65,10 +78,19 @@ namespace LightInject.AutoFactory.Tests
 
         IFoo GetAnotherFoo(int value);
 
-        IFoo<T> GetFoo<T>(int value);
+        IFoo<T> GetFoo<T>(int value) where T: Disposable, IDisposable;        
+    }
+
+    public interface IAnotherFooFactory
+    {
+        Foo GetFoo(int value);
+
+        AnotherFoo GetAnotherFoo(int value);
     }
 
     public interface IFoo { }
+
+
 
     public class Foo : IFoo
     {
@@ -77,14 +99,30 @@ namespace LightInject.AutoFactory.Tests
         }
     }
 
-    public interface IFoo<T>
+    public interface IFoo<T> where T:Disposable, IDisposable
     {
         
     }
 
-    public class Foo<T> : IFoo<T>
+    public class Disposable : IDisposable
+    {
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class Foo<T> : IFoo<T> where T:Disposable, IDisposable
     {
         public Foo(int value)
+        {
+        }
+    }
+
+        
+    public class FooWithInterfaceConstraint<T> where T : IDisposable
+    {
+        public FooWithInterfaceConstraint(int value)
         {
         }
     }
@@ -116,9 +154,11 @@ namespace LightInject.AutoFactory.Tests
             return serviceFactory.GetInstance<int, IFoo>(value, "AnotherFoo");
         }
 
-        public IFoo<T> GetFoo<T>(int value)
+        public IFoo<T> GetFoo<T>(int value) where T:Disposable, IDisposable
         {
             return serviceFactory.GetInstance<int, IFoo<T>>(value);
-        }
+        }     
     }
+
+   
 }

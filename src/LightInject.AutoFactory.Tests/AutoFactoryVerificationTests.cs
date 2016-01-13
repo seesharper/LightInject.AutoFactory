@@ -12,8 +12,8 @@ namespace LightInject.AutoFactory.Tests
             return factoryBuilder;
         }
 
-        public static void Configure(IServiceContainer container)
-        { 
+        public new static void Configure(IServiceContainer container)
+        {
             container.Register<ITypeBuilderFactory, VerifiableTypeBuilderFactory>();
         }
     }
