@@ -1,5 +1,7 @@
 # AutoFactory #
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ab1bun0764ix7t35?svg=true)](https://ci.appveyor.com/project/seesharper/lightinject-autofactory)
+
 **LightInject.AutoFactory** enables automatic implementation of factory interfaces.
 
 ## Installing ##
