@@ -21,7 +21,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 ******************************************************************************
-    LightInject.AutoFactory version 1.0.0.1
+    LightInject.AutoFactory version 1.1.0
     http://www.lightinject.net/
     http://twitter.com/bernhardrichter
 ******************************************************************************/
@@ -195,7 +195,7 @@ namespace LightInject.AutoFactory
                 throw new InvalidOperationException("The factory interface type must be an interface");
             }
 
-            var typeBuilder = typeBuilderFactory.CreateTypeBuilder(factoryInterface, Type.EmptyTypes);
+            var typeBuilder = typeBuilderFactory.CreateTypeBuilder(factoryInterface, new Type[] { });
             var containerField = ImplementConstructor(typeBuilder);
             ImplementMethods(typeBuilder, factoryInterface, containerField);
             return typeBuilderFactory.CreateType(typeBuilder);
