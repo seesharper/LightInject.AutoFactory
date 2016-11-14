@@ -21,7 +21,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 ******************************************************************************
-    LightInject.AutoFactory version 1.1.0
+    LightInject.AutoFactory version 1.1.1
     http://www.lightinject.net/
     http://twitter.com/bernhardrichter
 ******************************************************************************/
