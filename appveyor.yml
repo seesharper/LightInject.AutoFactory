@@ -1,4 +1,4 @@
-ersion: 1.0.{build}
+version: 1.0.{build}
 install:
 - cmd: cinst scriptcs
 build_script:
