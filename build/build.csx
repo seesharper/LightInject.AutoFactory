@@ -45,16 +45,14 @@ private void CopySourceFilesToNuGetLibDirectory()
 {	
 	CopySourceFile("NET45", "net45");
 	CopySourceFile("NET46", "net46");		
-	CopySourceFile("NETSTANDARD11", "netstandard1.1");		
-	CopySourceFile("NETSTANDARD13", "netstandard1.3");	    
+	CopySourceFile("NETSTANDARD11", "netstandard1.1");			
 }
 
 private void CopyBinaryFilesToNuGetLibDirectory()
 {
 	CopyBinaryFile("NET45", "net45");
 	CopyBinaryFile("NET46", "net46");	
-	CopyBinaryFile("NETSTANDARD11", "netstandard1.1");
-	CopyBinaryFile("NETSTANDARD13", "netstandard1.3");    		
+	CopyBinaryFile("NETSTANDARD11", "netstandard1.1");	
 }
 
 private void CreateSourcePackage()
@@ -118,10 +116,7 @@ private void Build(string frameworkMoniker)
 private void BuildDotNet()
 {
 	string pathToProjectFile = Path.Combine(pathToBuildDirectory, @"netstandard11/Binary/LightInject.AutoFactory/project.json");
-	DotNet.Build(pathToProjectFile, "netstandard1.1");
-	
-	pathToProjectFile = Path.Combine(pathToBuildDirectory, @"netstandard13/Binary/LightInject.AutoFactory/project.json");
-	DotNet.Build(pathToProjectFile, "netstandard13");
+	DotNet.Build(pathToProjectFile, "netstandard1.1");	
 }
 
 private void RestoreNuGetPackages()
@@ -177,8 +172,7 @@ private void InitializBuildDirectories()
 	DirectoryUtils.Delete(pathToBuildDirectory);	
 	Execute(() => InitializeNugetBuildDirectory("NET45"), "Preparing Net45");
 	Execute(() => InitializeNugetBuildDirectory("NET46"), "Preparing Net46");
-	Execute(() => InitializeNugetBuildDirectory("NETSTANDARD11"), "Preparing NetStandard1.1");
-	Execute(() => InitializeNugetBuildDirectory("NETSTANDARD13"), "Preparing NetStandard1.3");	    						
+	Execute(() => InitializeNugetBuildDirectory("NETSTANDARD11"), "Preparing NetStandard1.1");	
 }
 
 private void InitializeNugetBuildDirectory(string frameworkMoniker)
@@ -222,7 +216,6 @@ private void RenameSolutionFiles()
 	RenameSolutionFile("NET45");
 	RenameSolutionFile("NET46");
 	RenameSolutionFile("NETSTANDARD11");
-	RenameSolutionFile("NETSTANDARD13");	    
 }
 
 private void Internalize(string frameworkMoniker)
@@ -254,8 +247,7 @@ private void InternalizeSourceVersions()
 {
 	Execute (()=> Internalize("NET45"), "Internalizing NET45");
 	Execute (()=> Internalize("NET46"), "Internalizing NET46");
-	Execute (()=> Internalize("NETSTANDARD11"), "Internalizing NetStandard1.1");
-	Execute (()=> Internalize("NETSTANDARD13"), "Internalizing NetStandard1.3");
+	Execute (()=> Internalize("NETSTANDARD11"), "Internalizing NetStandard1.1");	
 }
 
 private void PatchPackagesConfig()
@@ -278,8 +270,7 @@ private void PatchAssemblyInfo()
 {
 	Execute(() => PatchAssemblyInfo("Net45"), "Patching AssemblyInfo (Net45)");
 	Execute(() => PatchAssemblyInfo("Net46"), "Patching AssemblyInfo (Net46)");	
-	Execute(() => PatchAssemblyInfo("NETSTANDARD11"), "Patching AssemblyInfo (NetStandard1.1)");
-	Execute(() => PatchAssemblyInfo("NETSTANDARD13"), "Patching AssemblyInfo (NetStandard1.3)");	    
+	Execute(() => PatchAssemblyInfo("NETSTANDARD11"), "Patching AssemblyInfo (NetStandard1.1)");	
 }
 
 private void PatchAssemblyInfo(string framework)
