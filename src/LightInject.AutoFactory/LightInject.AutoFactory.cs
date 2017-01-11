@@ -1,7 +1,7 @@
 ﻿/*********************************************************************************
     The MIT License (MIT)
 
-    Copyright (c) 2014 bernhard.richter@gmail.com
+    Copyright (c) 2016 bernhard.richter@gmail.com
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 ******************************************************************************
-    LightInject.AutoFactory version 1.1.1
+    LightInject.AutoFactory version 2.0.0
     http://www.lightinject.net/
     http://twitter.com/bernhardrichter
 ******************************************************************************/
@@ -152,13 +152,13 @@ namespace LightInject.AutoFactory
         static AutoFactoryBuilder()
         {
             GetInstanceMethods =
-                typeof(IServiceFactory).GetTypeInfo()
-                    .DeclaredMethods.Where(m => m.Name == "GetInstance" && m.IsGenericMethod && m.GetParameters().Length < m.GetGenericArguments().Length)
+                typeof(ServiceFactoryExtensions).GetTypeInfo()
+                    .DeclaredMethods.Where(m => m.Name == "GetInstance" && m.IsGenericMethod && (m.GetParameters().Length - 1) < m.GetGenericArguments().Length)
                     .OrderBy(m => m.GetGenericArguments().Length)
                     .ToArray();
 
             NamedGetInstanceMethods =
-                typeof(IServiceFactory).GetTypeInfo()
+                typeof(ServiceFactoryExtensions).GetTypeInfo()
                     .DeclaredMethods.Where(
                         m =>
                             m.Name == "GetInstance" && m.IsGenericMethod && m.GetParameters().Length > 0 &&
@@ -284,7 +284,7 @@ namespace LightInject.AutoFactory
                 il.Emit(OpCodes.Ldstr, serviceName);
             }
 
-            il.Emit(OpCodes.Callvirt, closedGenericGetInstanceMethod);
+            il.Emit(OpCodes.Call, closedGenericGetInstanceMethod);
             il.Emit(OpCodes.Ret);
         }
 

@@ -1,6 +1,8 @@
 # AutoFactory #
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ab1bun0764ix7t35?svg=true)](https://ci.appveyor.com/project/seesharper/lightinject-autofactory)
+[![AppVeyor](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg?maxAge=2592000)](https://ci.appveyor.com/project/seesharper/lightinject-autofactory)
+[![NuGet](https://img.shields.io/nuget/v/LightInject.AutoFactory.svg?maxAge=2592000)]()
+[![GitHub tag](https://img.shields.io/github/tag/seesharper/LightInject.AutoFactory.svg?maxAge=2592000)]()
 
 **LightInject.AutoFactory** enables automatic implementation of factory interfaces.
 
@@ -34,7 +36,7 @@ This will install a single file, **LightInject.AutoFactory.cs** in the target pr
 The following interface represents a factory class used to resolve **IFoo** instances. 
 
 	public interface IFoo {}	
-	
+
 	public class Foo : IFoo {}	
 
 	public interface IFooFactory
@@ -50,14 +52,14 @@ Instead of having to manually implement the **IFooFactory** interface, we can ju
 	var foo = factory.GetFoo();
 
 ## Parameters ##
-	
+
 	public interface IFoo {}	
 
 	public class Foo : IFoo 
 	{
 		public Foo(int value) {}		
 	}
-
+	
 	public interface IFooFactory
 	{
 		IFoo GetFoo(int value);
@@ -74,7 +76,7 @@ Runtime arguments can now be passed to the factory method.
 ## Named Services ##
 
 	public interface IFoo {}	
-	
+
 	public class Foo : IFoo {}	
 
 	public class AnotherFoo : IFoo {}	
@@ -84,7 +86,7 @@ Runtime arguments can now be passed to the factory method.
 		IFoo GetFoo();
 		IFoo GetAnotherFoo();
 	} 	
-	
+
 The name of the factory method is used to identify named services.
 
 	container.Register<IFoo, Foo>();	
@@ -93,13 +95,13 @@ The name of the factory method is used to identify named services.
 	var factory = container.GetInstance<IFooFactory>();
 	var foo = factory.GetFoo();
 	var anotherFoo = factory.GetAnotherFoo(); 
-	     	 
+
 ## Open Generics ##
 
 	public interface IFoo<T> {}	
-	
+
 	public class Foo<T> : IFoo<T> {}	
-	
+
 	public interface IFooFactory
 	{
 		IFoo<T> GetFoo<T>();	
