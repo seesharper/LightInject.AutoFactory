@@ -44,9 +44,10 @@ The following interface represents a factory class used to resolve **IFoo** inst
 		IFoo GetFoo();
 	} 
 
-Instead of having to manually implement the **IFooFactory** interface, we can just register the factory and resolve the instance through a factory that has been automatically implemented.
+Instead of having to manually implement the **IFooFactory** interface, we can just register the factory and resolve the instance through a factory that has been automatically implemented.  You can enable this functionality by calling **EnableAutoFactories** on the container.
 
-	container.Register<IFoo, Foo>();	
+	container.Register<IFoo, Foo>();
+	container.EnableAutoFactories();
 	container.RegisterAutoFactory<IFooFactory>(); 
 	var factory = container.GetInstance<IFooFactory>();
 	var foo = factory.GetFoo();
@@ -68,6 +69,7 @@ Instead of having to manually implement the **IFooFactory** interface, we can ju
 Runtime arguments can now be passed to the factory method.
 
 	container.Register<int, IFoo>((factory, value) => new Foo(value));	
+	container.EnableAutoFactories();
 	container.RegisterAutoFactory<IFooFactory>();
 	var factory = container.GetInstance<IFooFactory>();
 	var foo = factory.GetFoo(42);
@@ -91,6 +93,7 @@ The name of the factory method is used to identify named services.
 
 	container.Register<IFoo, Foo>();	
 	container.Register<IFoo, Foo>("AnotherFoo");	
+	container.EnableAutoFactories();
 	container.RegisterAutoFactory<IFooFactory>();
 	var factory = container.GetInstance<IFooFactory>();
 	var foo = factory.GetFoo();
@@ -110,6 +113,7 @@ The name of the factory method is used to identify named services.
 The generic type arguments from the factory method are used to create the service instance.
 
 	container.Register(typeof(IFoo<>), typeof(Foo<>));
+	container.EnableAutoFactories();
 	container.RegisterAutoFactory<IFooFactory>();
 	var factory = container.GetInstance<IFooFactory>();
 	var foo = factory.GetFoo<int>();
